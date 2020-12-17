@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Movie {
@@ -34,5 +35,9 @@ public class Movie {
 
     public int getId(){
         return id;
+    }
+
+    public List<PlaySchedule> getPlaySchedules(){
+        return Collections.unmodifiableList(playSchedules);
     }
 }

@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import utils.ErrorCustomException;
 
 import static utils.DateTimeUtils.createDateTime;
 
@@ -45,5 +46,10 @@ public class MovieRepository {
 
     public static boolean checkValidMovieId(int idInput) {
         return movies.stream().anyMatch(movie -> movie.getId() == idInput);
+    }
+
+    public static List<PlaySchedule> getMovieSchedule(int movieId){
+        return movies.stream().filter(movie -> movie.getId() == movieId).findFirst().get()
+            .getPlaySchedules();
     }
 }

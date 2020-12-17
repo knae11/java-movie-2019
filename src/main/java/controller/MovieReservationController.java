@@ -16,7 +16,7 @@ public class MovieReservationController {
         OutputView.printMovies(movies);
 
         int movieId = InputView.inputMovieId();
-        System.out.println(movieId);
+        OutputView.printMovieSchedule(movieId);
         // TODO 구현 진행
     }
 }
