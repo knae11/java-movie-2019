@@ -42,4 +42,8 @@ public class MovieRepository {
     public static List<Movie> getMovies() {
         return movies;
     }
+
+    public static boolean checkValidMovieId(int idInput) {
+        return movies.stream().anyMatch(movie -> movie.getId() == idInput);
+    }
 }
