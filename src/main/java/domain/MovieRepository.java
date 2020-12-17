@@ -56,12 +56,20 @@ public class MovieRepository {
             .getPlaySchedules();
     }
 
-    public static boolean checkValidTime(LocalDateTime time, int movieId) {
+    public static boolean checkValidTime(LocalDateTime time, int movieId){
         LocalDateTime nowTime = DateTimeUtils.createDateTime("2019-04-16 15:30");
+        PlaySchedule isValidSchedule = getMovieByIdAndSchedule(time,movieId);
+        boolean isScheduleAfterNow = isValidSchedule.getStartDateTime().isAfter(nowTime);
+        return isScheduleAfterNow;
+    }
+    private static PlaySchedule getMovieByIdAndSchedule(LocalDateTime time, int movieId) {
         PlaySchedule isValidSchedule = getMovieSchedule(movieId).stream().filter(schedule -> Objects
             .equals(schedule.getStartDateTime(), time)).findFirst()
             .orElseThrow(() -> new ErrorCustomException("해당하는 스케줄이 없습니다."));
-        boolean isScheduleAfterNow = isValidSchedule.getStartDateTime().isAfter(nowTime);
-        return isScheduleAfterNow;
+        return isValidSchedule;
+    }
+
+    public static boolean checkValidCapacity(LocalDateTime time, int movieId, int people){
+        return getMovieByIdAndSchedule(time, movieId).isPossibleCapacity(people);
     }
 }

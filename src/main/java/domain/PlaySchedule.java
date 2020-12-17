@@ -13,8 +13,12 @@ public class PlaySchedule {
         this.capacity = capacity;
     }
 
-    public LocalDateTime getStartDateTime(){
+    public LocalDateTime getStartDateTime() {
         return startDateTime;
+    }
+
+    public boolean isPossibleCapacity(int people) {
+        return people <= capacity;
     }
 
     @Override

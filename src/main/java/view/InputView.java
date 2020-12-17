@@ -50,7 +50,7 @@ public class InputView {
         }
     }
 
-    private static LocalDateTime checkTime(String timeInput,int movieId) {
+    private static LocalDateTime checkTime(String timeInput, int movieId) {
         try {
             LocalDateTime time = DateTimeUtils.createDateTime(timeInput);
             checkExistMovieSchedule(time, movieId);
@@ -61,16 +61,48 @@ public class InputView {
         }
     }
 
-    private static void checkExistMovieSchedule(LocalDateTime time,int movieId) {
-       if(!MovieRepository.checkValidTime(time, movieId)){
-           throw new ErrorCustomException("상영시간이 지났습니다.");
-       }
+    private static void checkExistMovieSchedule(LocalDateTime time, int movieId) {
+        if (!MovieRepository.checkValidTime(time, movieId)) {
+            throw new ErrorCustomException("상영시간이 지났습니다.");
+        }
     }
 
     private static void checkIsOneHourWithin(LocalDateTime time) {
         LocalDateTime nowTime = DateTimeUtils.createDateTime("2019-04-16 15:30");
-        if(!DateTimeUtils.isOneHourWithinRange(nowTime, time)){
+        if (!DateTimeUtils.isOneHourWithinRange(nowTime, time)) {
             throw new ErrorCustomException("현재 시간으로부터 1시간 이내의 영화만 예약해 주세요.");
+        }
+    }
+
+    public static int inputHowMany(int movieId, LocalDateTime movieReservationTime) {
+        while (true) {
+            try {
+                System.out.println("## 예약할 인원을 입력해 주세요.");
+                String peopleInput = scanner.nextLine().trim();
+                int people = checkPeopleIsNumber(peopleInput);
+                return checkValidCapacity(movieId, movieReservationTime, people);
+            } catch (ErrorCustomException errorCustomException) {
+                System.out.println(errorCustomException.getMessage());
+            }
+        }
+    }
+
+    private static int checkValidCapacity(int movieId, LocalDateTime movieReservationTime,
+        int people) {
+        if (people < 1) {
+            throw new ErrorCustomException("1이상을 입력해 주세요.");
+        }
+        if (!MovieRepository.checkValidCapacity(movieReservationTime, movieId, people)) {
+            throw new ErrorCustomException("수용범위를 벗어납니다.");
+        }
+        return people;
+    }
+
+    private static int checkPeopleIsNumber(String peopleInput) {
+        try {
+            return Integer.parseInt(peopleInput);
+        } catch (NumberFormatException n) {
+            throw new ErrorCustomException("숫자를 입력해 주세요.");
         }
     }
 }

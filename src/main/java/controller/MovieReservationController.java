@@ -19,6 +19,7 @@ public class MovieReservationController {
         int movieId = InputView.inputMovieId();
         OutputView.printMovieSchedule(movieId);
         LocalDateTime movieReservationTime = InputView.inputReservationTime(movieId);
+        int people = InputView.inputHowMany(movieId, movieReservationTime);
         System.out.println(DateTimeUtils.format(movieReservationTime));
         // TODO 구현 진행
     }
