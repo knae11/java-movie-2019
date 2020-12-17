@@ -1,7 +1,10 @@
 package view;
 
 import domain.MovieRepository;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import utils.DateTimeUtils;
 import utils.ErrorCustomException;
 
 public class InputView {
@@ -13,25 +16,61 @@ public class InputView {
                 System.out.println("## 예약할 영화를 선택하세요.");
                 String idInput = scanner.nextLine().trim();
                 return checkIdNumber(idInput);
-            } catch (ErrorCustomException errorCustomException){
+            } catch (ErrorCustomException errorCustomException) {
                 System.out.println(errorCustomException.getMessage());
             }
         }
     }
 
     private static int checkIdNumber(String idInput) {
-        try{
+        try {
             int id = Integer.parseInt(idInput);
             checkValidMovieId(id);
             return id;
-        } catch (NumberFormatException n){
+        } catch (NumberFormatException n) {
             throw new ErrorCustomException("숫자를 입력해 주세요.");
         }
     }
 
     private static void checkValidMovieId(int id) {
-        if(!MovieRepository.checkValidMovieId(id)){
+        if (!MovieRepository.checkValidMovieId(id)) {
             throw new ErrorCustomException("예매 가능한 영화가 없습니다.");
+        }
+    }
+
+    public static LocalDateTime inputReservationTime(int movieId) {
+        while (true) {
+            try {
+                System.out.println("## 예약할 시간를 선택하세요. 정확하게 같은 형식으로 입력");
+                String timeInput = scanner.nextLine().trim();
+                return checkTime(timeInput, movieId);
+            } catch (ErrorCustomException errorCustomException) {
+                System.out.println(errorCustomException.getMessage());
+            }
+        }
+    }
+
+    private static LocalDateTime checkTime(String timeInput,int movieId) {
+        try {
+            LocalDateTime time = DateTimeUtils.createDateTime(timeInput);
+            checkExistMovieSchedule(time, movieId);
+            checkIsOneHourWithin(time);
+            return time;
+        } catch (DateTimeParseException d) {
+            throw new ErrorCustomException("yyyy-MM-dd HH:mm 같은 형식으로 입력해 주세요.");
+        }
+    }
+
+    private static void checkExistMovieSchedule(LocalDateTime time,int movieId) {
+       if(!MovieRepository.checkValidTime(time, movieId)){
+           throw new ErrorCustomException("상영시간이 지났습니다.");
+       }
+    }
+
+    private static void checkIsOneHourWithin(LocalDateTime time) {
+        LocalDateTime nowTime = DateTimeUtils.createDateTime("2019-04-16 15:30");
+        if(!DateTimeUtils.isOneHourWithinRange(nowTime, time)){
+            throw new ErrorCustomException("현재 시간으로부터 1시간 이내의 영화만 예약해 주세요.");
         }
     }
 }

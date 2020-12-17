@@ -21,6 +21,7 @@ public class DateTimeUtils {
         return dateTime.format(formatter);
     }
 
+    //1 -> 현재시간, 2-> 영화시간
     public static boolean isOneHourWithinRange(LocalDateTime dateTime1, LocalDateTime dateTime2) {
         LocalDateTime startDateTime = dateTime1.minusHours(ONE_HOURS);
         LocalDateTime endDateTime = dateTime1.plusHours(ONE_HOURS);

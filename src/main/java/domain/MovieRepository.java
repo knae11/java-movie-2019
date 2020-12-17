@@ -1,7 +1,10 @@
 package domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import utils.DateTimeUtils;
 import utils.ErrorCustomException;
 
 import static utils.DateTimeUtils.createDateTime;
@@ -48,8 +51,17 @@ public class MovieRepository {
         return movies.stream().anyMatch(movie -> movie.getId() == idInput);
     }
 
-    public static List<PlaySchedule> getMovieSchedule(int movieId){
+    public static List<PlaySchedule> getMovieSchedule(int movieId) {
         return movies.stream().filter(movie -> movie.getId() == movieId).findFirst().get()
             .getPlaySchedules();
+    }
+
+    public static boolean checkValidTime(LocalDateTime time, int movieId) {
+        LocalDateTime nowTime = DateTimeUtils.createDateTime("2019-04-16 15:30");
+        PlaySchedule isValidSchedule = getMovieSchedule(movieId).stream().filter(schedule -> Objects
+            .equals(schedule.getStartDateTime(), time)).findFirst()
+            .orElseThrow(() -> new ErrorCustomException("해당하는 스케줄이 없습니다."));
+        boolean isScheduleAfterNow = isValidSchedule.getStartDateTime().isAfter(nowTime);
+        return isScheduleAfterNow;
     }
 }

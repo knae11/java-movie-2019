@@ -1,8 +1,11 @@
 package domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import utils.ErrorCustomException;
 
 public class Movie {
     private static final char NEW_LINE = '\n';
@@ -30,14 +33,18 @@ public class Movie {
             sb.append(playSchedule);
         }
         return id + " - " + name + ", " + price + "원" + NEW_LINE
-                + sb.toString();
+            + sb.toString();
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public List<PlaySchedule> getPlaySchedules(){
+    public List<PlaySchedule> getPlaySchedules() {
         return Collections.unmodifiableList(playSchedules);
+    }
+
+    public boolean checkPlaySchedule(LocalDateTime wantTime) {
+        return playSchedules.stream().anyMatch(schedule -> Objects.equals(schedule.getStartDateTime(), wantTime));
     }
 }
