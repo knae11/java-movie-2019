@@ -72,4 +72,8 @@ public class MovieRepository {
     public static boolean checkValidCapacity(LocalDateTime time, int movieId, int people){
         return getMovieByIdAndSchedule(time, movieId).isPossibleCapacity(people);
     }
+
+    public static Movie findMovieById(int movieId){
+        return movies.stream().filter(movie -> movie.getId() == movieId).findFirst().get();
+    }
 }

@@ -105,4 +105,13 @@ public class InputView {
             throw new ErrorCustomException("숫자를 입력해 주세요.");
         }
     }
+
+    public static String inputMoreReservationOrPay(){
+        System.out.println("## 1. 예약종료, 2. 추가예약 중 선택해주세요.");
+        String input = scanner.nextLine().trim();
+        if( !(input.equals("1")|| input.equals("2")) ){
+            throw new ErrorCustomException("1,2중에서 입력해 주세요");
+        }
+        return input;
+    }
 }
