@@ -10,7 +10,7 @@ import utils.ErrorCustomException;
 import static utils.DateTimeUtils.createDateTime;
 
 public class MovieRepository {
-    private static List<Movie> movies = new ArrayList<>();
+    private static final List<Movie> movies = new ArrayList<>();
 
     static {
         Movie movie1 = new Movie(1, "생일", 8_000);
@@ -52,28 +52,28 @@ public class MovieRepository {
     }
 
     public static List<PlaySchedule> getMovieSchedule(int movieId) {
-        return movies.stream().filter(movie -> movie.getId() == movieId).findFirst().get()
-            .getPlaySchedules();
+        return movies.stream().filter(movie -> movie.getId() == movieId).findFirst()
+            .orElseThrow(() -> new ErrorCustomException("해당하는 영화가 없습니다.")).getPlaySchedules();
     }
 
-    public static boolean checkValidTime(LocalDateTime time, int movieId){
+    public static boolean checkValidTime(LocalDateTime time, int movieId) {
         LocalDateTime nowTime = DateTimeUtils.createDateTime("2019-04-16 15:30");
-        PlaySchedule isValidSchedule = getMovieByIdAndSchedule(time,movieId);
-        boolean isScheduleAfterNow = isValidSchedule.getStartDateTime().isAfter(nowTime);
-        return isScheduleAfterNow;
+        PlaySchedule isValidSchedule = getMovieByIdAndSchedule(time, movieId);
+        return isValidSchedule.getStartDateTime().isAfter(nowTime);
     }
+
     private static PlaySchedule getMovieByIdAndSchedule(LocalDateTime time, int movieId) {
-        PlaySchedule isValidSchedule = getMovieSchedule(movieId).stream().filter(schedule -> Objects
+        return getMovieSchedule(movieId).stream().filter(schedule -> Objects
             .equals(schedule.getStartDateTime(), time)).findFirst()
             .orElseThrow(() -> new ErrorCustomException("해당하는 스케줄이 없습니다."));
-        return isValidSchedule;
     }
 
-    public static boolean checkValidCapacity(LocalDateTime time, int movieId, int people){
+    public static boolean checkValidCapacity(LocalDateTime time, int movieId, int people) {
         return getMovieByIdAndSchedule(time, movieId).isPossibleCapacity(people);
     }
 
-    public static Movie findMovieById(int movieId){
-        return movies.stream().filter(movie -> movie.getId() == movieId).findFirst().get();
+    public static Movie findMovieById(int movieId) {
+        return movies.stream().filter(movie -> movie.getId() == movieId).findFirst()
+            .orElseThrow(() -> new ErrorCustomException("해당하는 영화가 없습니다."));
     }
 }

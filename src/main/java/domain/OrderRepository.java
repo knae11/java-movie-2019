@@ -16,11 +16,11 @@ public class OrderRepository {
     }
 
     public static boolean overTotalPrice(int point) {
-        return orders.stream().mapToInt(order -> order.getPrice()).sum() >= point;
+        return orders.stream().mapToInt(Order::getPrice).sum() >= point;
     }
 
     public static double calculateTotalPay(int point, String payment) {
-        int total = orders.stream().mapToInt(order -> order.getPrice()).sum();
+        int total = orders.stream().mapToInt(Order::getPrice).sum();
         total -= point;
         if (payment.equals("1")) {
             return total *= 0.95;

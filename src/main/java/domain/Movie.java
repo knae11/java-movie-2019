@@ -1,11 +1,8 @@
 package domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import utils.ErrorCustomException;
 
 public class Movie {
     private static final char NEW_LINE = '\n';
@@ -48,7 +45,4 @@ public class Movie {
         return Collections.unmodifiableList(playSchedules);
     }
 
-    //public boolean checkPlaySchedule(LocalDateTime wantTime) {
-//        return playSchedules.stream().anyMatch(schedule -> Objects.equals(schedule.getStartDateTime(), wantTime));
-//    }
 }

@@ -14,7 +14,7 @@ public class OutputView {
     
     public static void printMovieSchedule(int movieId){
         System.out.println("## 선택하신 영화의 시간표 입니다.");
-        MovieRepository.getMovieSchedule(movieId).stream().forEach(System.out::print);
+        MovieRepository.getMovieSchedule(movieId).forEach(System.out::print);
     }
 
 

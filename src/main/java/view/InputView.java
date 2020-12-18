@@ -65,7 +65,6 @@ public class InputView {
     }
 
     public static int inputHowMany(int movieId, LocalDateTime movieReservationTime) {
-
         System.out.println("## 예약할 인원을 입력해 주세요.");
         String peopleInput = scanner.nextLine().trim();
         int people = checkIsNumber(peopleInput);
