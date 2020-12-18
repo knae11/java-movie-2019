@@ -1,6 +1,7 @@
 package view;
 
 import domain.MovieRepository;
+import domain.OrderRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -79,7 +80,7 @@ public class InputView {
             try {
                 System.out.println("## 예약할 인원을 입력해 주세요.");
                 String peopleInput = scanner.nextLine().trim();
-                int people = checkPeopleIsNumber(peopleInput);
+                int people = checkIsNumber(peopleInput);
                 return checkValidCapacity(movieId, movieReservationTime, people);
             } catch (ErrorCustomException errorCustomException) {
                 System.out.println(errorCustomException.getMessage());
@@ -98,20 +99,71 @@ public class InputView {
         return people;
     }
 
-    private static int checkPeopleIsNumber(String peopleInput) {
+    private static int checkIsNumber(String input) {
         try {
-            return Integer.parseInt(peopleInput);
+            return Integer.parseInt(input);
         } catch (NumberFormatException n) {
             throw new ErrorCustomException("숫자를 입력해 주세요.");
         }
     }
 
-    public static String inputMoreReservationOrPay(){
+    public static String inputMoreReservationOrPay() {
         System.out.println("## 1. 예약종료, 2. 추가예약 중 선택해주세요.");
         String input = scanner.nextLine().trim();
-        if( !(input.equals("1")|| input.equals("2")) ){
+        if (!(input.equals("1") || input.equals("2"))) {
             throw new ErrorCustomException("1,2중에서 입력해 주세요");
         }
         return input;
+    }
+
+    public static int inputPoint() {
+        while (true) {
+            try {
+                System.out.println("## 포인트를 입력해 주세요.");
+                String pointInput = scanner.nextLine().trim();
+                int point = checkIsNumber(pointInput);
+                checkValidPoint(point);
+                return point;
+            } catch (ErrorCustomException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static void checkValidPoint(int point) {
+        checkOverMoviePrice(point);
+        checkMinZero(point);
+
+    }
+
+    private static void checkMinZero(int point) {
+        if (point < 0) {
+            throw new ErrorCustomException("0이상의 정수만 입력해 주세요.");
+        }
+    }
+
+    private static void checkOverMoviePrice(int point) {
+        if (!OrderRepository.overTotalPrice(point)) {
+            throw new ErrorCustomException("포인트 사용은 영화 총 금액을 넘을 수 없습니다.");
+        }
+    }
+
+    public static String inputPayment() {
+        while (true) {
+            try {
+                System.out.println("## 결제 방법을 선택해 주세요. 1: 카드, 2: 현금");
+                String payment = scanner.nextLine().trim();
+                checkValidPayment(payment);
+                return payment;
+            } catch (ErrorCustomException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static void checkValidPayment(String payment) {
+        if (!(payment.equals("1") || payment.equals("2"))) {
+            throw new ErrorCustomException("1,2 중에서만 입력해 주세요.");
+        }
     }
 }

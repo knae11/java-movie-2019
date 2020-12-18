@@ -18,4 +18,7 @@ public class OutputView {
     }
 
 
+    public static void printTotalToPay(double totalToPay) {
+        System.out.println("## 계산할 총 금액은 "+ totalToPay + "원 입니다.");
+    }
 }

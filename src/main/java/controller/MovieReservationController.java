@@ -24,9 +24,12 @@ public class MovieReservationController {
         }
         payMovie();
     }
-
+    //TODO : 결제기능
     private void payMovie() {
-
+       int point =  InputView.inputPoint();
+       String payment = InputView.inputPayment();
+       double totalToPay = OrderRepository.calculateTotalPay(point, payment);
+       OutputView.printTotalToPay(totalToPay);
     }
 
     private void chooseMovie() {
