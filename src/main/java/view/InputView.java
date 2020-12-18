@@ -12,15 +12,9 @@ public class InputView {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static int inputMovieId() {
-        while (true) {
-            try {
-                System.out.println("## 예약할 영화를 선택하세요.");
-                String idInput = scanner.nextLine().trim();
-                return checkIdNumber(idInput);
-            } catch (ErrorCustomException errorCustomException) {
-                System.out.println(errorCustomException.getMessage());
-            }
-        }
+        System.out.println("## 예약할 영화를 선택하세요.");
+        String idInput = scanner.nextLine().trim();
+        return checkIdNumber(idInput);
     }
 
     private static int checkIdNumber(String idInput) {
@@ -40,15 +34,10 @@ public class InputView {
     }
 
     public static LocalDateTime inputReservationTime(int movieId) {
-        while (true) {
-            try {
-                System.out.println("## 예약할 시간를 선택하세요. 정확하게 같은 형식으로 입력");
-                String timeInput = scanner.nextLine().trim();
-                return checkTime(timeInput, movieId);
-            } catch (ErrorCustomException errorCustomException) {
-                System.out.println(errorCustomException.getMessage());
-            }
-        }
+        System.out.println("## 예약할 시간를 선택하세요. 정확하게 같은 형식으로 입력");
+        String timeInput = scanner.nextLine().trim();
+        return checkTime(timeInput, movieId);
+
     }
 
     private static LocalDateTime checkTime(String timeInput, int movieId) {
@@ -76,16 +65,12 @@ public class InputView {
     }
 
     public static int inputHowMany(int movieId, LocalDateTime movieReservationTime) {
-        while (true) {
-            try {
-                System.out.println("## 예약할 인원을 입력해 주세요.");
-                String peopleInput = scanner.nextLine().trim();
-                int people = checkIsNumber(peopleInput);
-                return checkValidCapacity(movieId, movieReservationTime, people);
-            } catch (ErrorCustomException errorCustomException) {
-                System.out.println(errorCustomException.getMessage());
-            }
-        }
+
+        System.out.println("## 예약할 인원을 입력해 주세요.");
+        String peopleInput = scanner.nextLine().trim();
+        int people = checkIsNumber(peopleInput);
+        return checkValidCapacity(movieId, movieReservationTime, people);
+
     }
 
     private static int checkValidCapacity(int movieId, LocalDateTime movieReservationTime,
@@ -117,17 +102,12 @@ public class InputView {
     }
 
     public static int inputPoint() {
-        while (true) {
-            try {
-                System.out.println("## 포인트를 입력해 주세요.");
-                String pointInput = scanner.nextLine().trim();
-                int point = checkIsNumber(pointInput);
-                checkValidPoint(point);
-                return point;
-            } catch (ErrorCustomException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        System.out.println("## 포인트를 입력해 주세요.");
+        String pointInput = scanner.nextLine().trim();
+        int point = checkIsNumber(pointInput);
+        checkValidPoint(point);
+        return point;
+
     }
 
     private static void checkValidPoint(int point) {
@@ -149,16 +129,10 @@ public class InputView {
     }
 
     public static String inputPayment() {
-        while (true) {
-            try {
-                System.out.println("## 결제 방법을 선택해 주세요. 1: 카드, 2: 현금");
-                String payment = scanner.nextLine().trim();
-                checkValidPayment(payment);
-                return payment;
-            } catch (ErrorCustomException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        System.out.println("## 결제 방법을 선택해 주세요. 1: 카드, 2: 현금");
+        String payment = scanner.nextLine().trim();
+        checkValidPayment(payment);
+        return payment;
     }
 
     private static void checkValidPayment(String payment) {
